@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FB9300E91A99827000CAB7EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9300E81A99827000CAB7EE /* main.m */; };
+		FB9300F01A9986BE00CAB7EE /* StringSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9300EF1A9986BE00CAB7EE /* StringSplitter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,8 @@
 /* Begin PBXFileReference section */
 		FB9300E51A99827000CAB7EE /* phase1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = phase1; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB9300E81A99827000CAB7EE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FB9300EF1A9986BE00CAB7EE /* StringSplitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringSplitter.m; sourceTree = "<group>"; };
+		FB9300F11A9986EA00CAB7EE /* StringSplitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringSplitter.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,8 @@
 			isa = PBXGroup;
 			children = (
 				FB9300E81A99827000CAB7EE /* main.m */,
+				FB9300EF1A9986BE00CAB7EE /* StringSplitter.m */,
+				FB9300F11A9986EA00CAB7EE /* StringSplitter.h */,
 			);
 			path = phase1;
 			sourceTree = "<group>";
@@ -119,6 +124,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB9300E91A99827000CAB7EE /* main.m in Sources */,
+				FB9300F01A9986BE00CAB7EE /* StringSplitter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,11 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "StringSplitter.h"
 
 int main(int argc, const char * argv[]) {
-    @autoreleasepool {
-        // insert code here...
-        NSLog(@"Hello, World!");
+    StringSplitter* splitter = [[StringSplitter alloc] init];
+    splitter.string = @"Multiplication1 11, 13, 17 and 09";
+    NSLog(@"Words:\n");
+
+    for( NSString *word in [splitter words]){
+        NSLog(@"> %@\n", word);
     }
+    NSLog(@"\nNumbers:\n\n");
+    for(NSNumber *number in [splitter numbers]){
+        NSLog(@"> %@\n", number);
+    }
+    NSLog(@"\nWords and Numbers:\n\n");
+    for(id token in [splitter wordsAndNumbers]){
+        NSLog(@"> %@\n", token); }
     return 0;
 }
