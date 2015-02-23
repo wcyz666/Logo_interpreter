@@ -17,7 +17,7 @@
 
     NSMutableArray *numbers = [[NSMutableArray alloc] init];
     for (NSTextCheckingResult *matchResult in results){
-        [numbers addObject:[NSNumber numberWithFloat:[[searchedString substringWithRange:[matchResult range]] floatValue]]];
+        [numbers addObject:[NSNumber numberWithFloat:[[_string substringWithRange:[matchResult range]] floatValue]]];
     }
     return numbers;
 }
@@ -27,7 +27,7 @@
 
     NSMutableArray *words = [[NSMutableArray alloc] init];
     for (NSTextCheckingResult *matchResult in results){
-        [words addObject:[searchedString substringWithRange:[matchResult range]]];
+        [words addObject:[_string substringWithRange:[matchResult range]]];
     }
     return words;
 }
@@ -38,16 +38,16 @@
 	
     NSMutableArray *wordsAndNumbers = [[NSMutableArray alloc] init];
     for (NSTextCheckingResult *matchResult in results){
-		NSString* tmp = [searchedString substringWithRange:[matchResult range]];
+		NSString* tmp = [_string substringWithRange:[matchResult range]];
 		if ([tmp characterAtIndex:0] >= '0' && [tmp characterAtIndex:0] <= '9' )
 			[wordsAndNumbers addObject:[NSNumber numberWithFloat:[tmp floatValue]]];
 		else
-			[words addObject:tmp];
+			[wordsAndNumbers addObject:tmp];
     }
     return wordsAndNumbers;
 }
 
-- (NSArray *) regexProcess(NSString* pattern){
+- (NSArray *) regexProcess: (NSString*) pattern{
 	NSString *searchedString = _string;
     NSRange searchedRange = NSMakeRange(0, [searchedString length]);
     NSError *error = nil;

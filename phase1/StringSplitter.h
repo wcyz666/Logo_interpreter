@@ -18,4 +18,5 @@
 - (NSArray *) words;
 - (NSArray *) numbers;
 - (NSArray *) wordsAndNumbers;
+- (NSArray *) regexProcess: (NSString *)pattern;
 @end
