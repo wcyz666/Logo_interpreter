@@ -3,7 +3,7 @@
 //  phase1
 //
 //  Created by wcyz666 on 15-2-21.
-//  Copyright (c) 2015年 wcyz666. All rights reserved.
+//  Copyright (c) 2015 wcyz666. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -12,27 +12,19 @@
 @implementation StringSplitter
 
 - (NSArray *) numbers{
-    NSString *searchedString = _string;
-    NSRange searchedRange = NSMakeRange(0, [searchedString length]);
-    NSString *pattern = @"(^|(?<=[\\W_]))[0-9]+(?=[\\W_]|$)";
-    NSError *error = nil;
-    
-    NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
-    NSArray *results = [regex matchesInString:searchedString options:0 range: searchedRange];
+
+    NSArray *results = [self regexProcess:@"(^|(?<=[\\W_]))\\d+(?=[\\W_]|$)"];
+
     NSMutableArray *numbers = [[NSMutableArray alloc] init];
     for (NSTextCheckingResult *matchResult in results){
-        [numbers addObject:[searchedString substringWithRange:[matchResult range]]];
+        [numbers addObject:[NSNumber numberWithFloat:[[searchedString substringWithRange:[matchResult range]] floatValue]]];
     }
     return numbers;
 }
 - (NSArray *) words{
-    NSString *searchedString = _string;
-    NSRange searchedRange = NSMakeRange(0, [searchedString length]);
-    NSString *pattern = @"(^|(?<=[\\W_]))[A-Za-z][A-Za-z0-9]*(?=[\\W_]|$)";
-    NSError *error = nil;
-    
-    NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
-    NSArray *results = [regex matchesInString:searchedString options:0 range: searchedRange];
+
+    NSArray *results = [self regexProcess:@"(^|(?<=[\\W_]))[A-Za-z][A-Za-z\\d]*(?=[\\W_]|$)"];
+
     NSMutableArray *words = [[NSMutableArray alloc] init];
     for (NSTextCheckingResult *matchResult in results){
         [words addObject:[searchedString substringWithRange:[matchResult range]]];
@@ -41,17 +33,26 @@
 }
 
 - (NSArray *) wordsAndNumbers{
-    NSString *searchedString = _string;
+
+	NSArray *results = [self regexProcess:@"(^|(?<=[\\W_]))(([A-Za-z][A-Za-z\\d]*)|\\d+)(?=[\\W_]|$)"];
+	
+    NSMutableArray *wordsAndNumbers = [[NSMutableArray alloc] init];
+    for (NSTextCheckingResult *matchResult in results){
+		NSString* tmp = [searchedString substringWithRange:[matchResult range]];
+		if ([tmp characterAtIndex:0] >= '0' && [tmp characterAtIndex:0] <= '9' )
+			[wordsAndNumbers addObject:[NSNumber numberWithFloat:[tmp floatValue]]];
+		else
+			[words addObject:tmp];
+    }
+    return wordsAndNumbers;
+}
+
+- (NSArray *) regexProcess(NSString* pattern){
+	NSString *searchedString = _string;
     NSRange searchedRange = NSMakeRange(0, [searchedString length]);
-    NSString *pattern = @"(^|(?<=[\\W_]))(([A-Za-z][A-Za-z0-9]*)|([0-9]+))(?=[\\W_]|$)";
     NSError *error = nil;
     
     NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
-    NSArray *results = [regex matchesInString:searchedString options:0 range: searchedRange];
-    NSMutableArray *wordsAndNumbers = [[NSMutableArray alloc] init];
-    for (NSTextCheckingResult *matchResult in results){
-        [wordsAndNumbers addObject:[searchedString substringWithRange:[matchResult range]]];
-    }
-    return wordsAndNumbers;
+    return [regex matchesInString:searchedString options:0 range: searchedRange];
 }
 @end
