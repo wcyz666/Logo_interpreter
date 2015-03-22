@@ -4,7 +4,7 @@
 //  phase1
 //
 //  Created by wcyz666 on 15-3-19.
-//  Copyright (c) 2015年 wcyz666. All rights reserved.
+//  Copyright (c) 2015 wcyz666. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -133,7 +133,7 @@
 @implementation LTToken
 
 - (TreeNode* ) parse:(TokenList *)tokenList{
-    RTNode* fd = [[RTNode alloc] init];
+    LTNode* fd = [[LTNode alloc] init];
     if ([tokenList hasMore]){
         Token* token = [tokenList nextToken];
         if ([token isKindOfClass:[NumberToken class]]){
@@ -195,6 +195,12 @@
     RepeatNode* repeatRoot = [[RepeatNode alloc] init];
     NSMutableArray* repeatStack = [[NSMutableArray alloc] init];
     [repeatStack addObject:repeatRoot];
+    
+    //Use Array to simulate Stack structure.
+    //The Last element is the current root
+    //This algorithm allows for arbitrary deep layers.
+    
+    
     RepeatNode* currentRoot = repeatRoot;
     
     [self validateRepeat:tokenList repeatNode:repeatRoot];

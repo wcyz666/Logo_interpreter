@@ -28,6 +28,7 @@
     for (NSTextCheckingResult* result in [regex matchesInString:searched options:0 range:searchedRange]){
         [tokens addObject:[_code substringWithRange:[result range]]];
     }
+    //use regulation expression to detect correct tokens
     return tokens;
 }
 

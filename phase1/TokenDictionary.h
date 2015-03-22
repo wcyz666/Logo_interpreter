@@ -3,7 +3,7 @@
 //  phase1
 //
 //  Created by wcyz666 on 15-3-19.
-//  Copyright (c) 2015年 wcyz666. All rights reserved.
+//  Copyright (c) 2015 wcyz666. All rights reserved.
 //
 
 #ifndef phase1_TokenDictionary_h

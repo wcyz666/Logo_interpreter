@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SyntaxTreeNode.h"
 
-
+// object node for output of each command, the parent obj is TreeNode
 @implementation TreeNode
 
 - (id) init{
@@ -19,6 +19,8 @@
     }
     return self;
 }
+
+//if not repeat command, then return emoty array
 
 -(NSArray *)getChildren {
     return _nodeArray;
@@ -64,6 +66,7 @@
     return self;
 }
 
+//initialize the NodeWithNumber, set the number as argument of command
 -(void)evaluate{
     NSLog(@"Move turtle");
 }
@@ -73,7 +76,7 @@
 @implementation FDNode
 
 -(void)evaluate{
-    NSLog(@"Move turtle %d steps forward", [self.number intValue]);
+    NSLog(@"Move turtle %d steps forward.", [self.number intValue]);
 }
 
 @end
@@ -81,7 +84,7 @@
 @implementation BKNode
 
 -(void)evaluate{
-    NSLog(@"Move turtle %d steps forward", [self.number intValue]);
+    NSLog(@"Move turtle %d steps backward.", [self.number intValue]);
 }
 
 @end
@@ -89,7 +92,7 @@
 @implementation RTNode
 
 -(void)evaluate{
-    NSLog(@"Turn turtle %d degrees right",[self.number intValue]);
+    NSLog(@"Turn turtle %d degrees right.",[self.number intValue]);
 }
 
 @end
@@ -97,7 +100,7 @@
 @implementation LTNode
 
 -(void)evaluate{
-    NSLog(@"Turn turtle %d degrees left",[self.number intValue]);
+    NSLog(@"Turn turtle %d degrees left.",[self.number intValue]);
 }
 
 @end
