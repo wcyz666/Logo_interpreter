@@ -1,0 +1,137 @@
+//
+//  TreeNode.m
+//  phase2
+//
+//  Created by Jialiang Zhao on 18/3/15.
+//  Copyright (c) 2015 Jialiang Zhao. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "SyntaxTreeNode.h"
+
+
+@implementation TreeNode
+
+- (id) init{
+    self = [super init];
+    if (self){
+        _nodeArray = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+-(NSArray *)getChildren {
+    return _nodeArray;
+}
+-(void)evaluate{
+    NSLog(@"this is TreeNode");
+}
+- (void) addChildren:(TreeNode *)node{
+    
+}
+
+@end
+
+@implementation CSNode
+
+- (void)evaluate{
+    NSLog(@"Clear screen");
+}
+
+@end
+
+@implementation PUNode
+
+- (void)evaluate{
+    NSLog(@"Pen up.");
+}
+
+@end
+
+@implementation PDNode
+
+- (void)evaluate{
+    NSLog(@"Pen down.");
+}
+
+@end
+
+@implementation NodeWithNumber
+-(id)init{
+    self=[super init];
+    if (self)
+        _number=0;
+    return self;
+}
+
+-(void)evaluate{
+    NSLog(@"Move turtle");
+}
+
+@end
+
+@implementation FDNode
+
+-(void)evaluate{
+    NSLog(@"Move turtle %d steps forward", [self.number intValue]);
+}
+
+@end
+
+@implementation BKNode
+
+-(void)evaluate{
+    NSLog(@"Move turtle %d steps forward", [self.number intValue]);
+}
+
+@end
+
+@implementation RTNode
+
+-(void)evaluate{
+    NSLog(@"Turn turtle %d degrees right",[self.number intValue]);
+}
+
+@end
+
+@implementation LTNode
+
+-(void)evaluate{
+    NSLog(@"Turn turtle %d degrees left",[self.number intValue]);
+}
+
+@end
+
+@implementation RepeatNode
+
+-(NSArray *)getChildren:(TreeNode *)node{
+    return self.nodeArray;
+}
+
+-(void)addChildren:(TreeNode *)node{
+    [self.nodeArray addObject:node];
+}
+
+-(void)evaluate{
+    int i,j;
+    for (i=0; i<[self.number intValue]; i++) {
+        for (j=0; j<[self.nodeArray count]; j++) {
+            [self.nodeArray[j] evaluate];
+        }
+    }
+}
+@end
+
+
+
+
+
+
+
+
+
+
+
+
+
+

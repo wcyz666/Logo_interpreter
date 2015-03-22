@@ -7,22 +7,28 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "StringSplitter.h"
+#import "SourceCode.h"
 
 int main(int argc, const char * argv[]) {
-    StringSplitter* splitter = [[StringSplitter alloc] init];
-    splitter.string = @"Multiplication1 11, 13, 17 and 09";
-    NSLog(@"Words:\n");
-
-    for( NSString *word in [splitter words]){
-        NSLog(@"> %@\n", word);
+    SourceCode* sourceCode = [[SourceCode alloc] init];
+    char _command[130];
+    NSString* command;
+    while (1) {
+        fgets(_command, 128, stdin);
+        size_t ln = strlen(_command) - 1;
+        if (_command[ln] == '\n')
+            _command[ln] = '\0';
+        if (strlen(_command) == 0)
+            continue;
+        command = [NSString stringWithUTF8String:_command];
+        sourceCode.code = command;
+        @try {
+            [[[sourceCode tokenize] parse] evaluate];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"%@: %@", [exception name], [exception reason]);
+        }
+        @finally {
+        }
     }
-    NSLog(@"\nNumbers:\n\n");
-    for(NSNumber *number in [splitter numbers]){
-        NSLog(@"> %@\n", number);
-    }
-    NSLog(@"\nWords and Numbers:\n\n");
-    for(id token in [splitter wordsAndNumbers]){
-        NSLog(@"> %@\n", token); }
-    return 0;
 }
