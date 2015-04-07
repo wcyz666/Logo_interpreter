@@ -273,12 +273,10 @@
             if ([tokenList hasMore]){
                 Token* token = [tokenList nextToken];
                 if ([token isKindOfClass:[VarToken class]]){
-                    fd.anoName = (NSString *) token.value;
-                    fd.isVar = YES;
+                    fd.value = [VariableTable getVars:(NSString *) token.value];
                 }
                 else if ([token isKindOfClass:[NumberToken class]]){
                     fd.value = (NSNumber *) token.value;
-                    fd.isVar = NO;
                 }
                 else{
                     NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
@@ -309,5 +307,133 @@
 - (TreeNode* ) parse:(TokenList *)tokenList{
     NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Redundant variables" userInfo:nil];
     @throw myException;
+}
+@end
+
+
+@implementation AddToken
+
+- (TreeNode* ) parse:(TokenList *)tokenList{
+    SetNode* fd = [[SetNode alloc] init];
+    NSNumber* firstVal, *secondVal;
+    if ([tokenList hasMore]){
+        Token* token = [tokenList nextToken];
+        if ([token isKindOfClass:[VarToken class]]){
+            fd.name = (NSString *) token.value;
+            if ([tokenList hasMore]){
+                Token* token = [tokenList nextToken];
+                if ([token isKindOfClass:[VarToken class]]){
+                    firstVal = [VariableTable getVars:(NSString *) token.value];
+                }
+                else if ([token isKindOfClass:[NumberToken class]]){
+                    firstVal = (NSNumber *) token.value;
+                }
+                else{
+                    NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
+                    @throw myException;
+                }
+                
+                if ([tokenList hasMore]){
+                    Token* token = [tokenList nextToken];
+                    if ([token isKindOfClass:[VarToken class]]){
+                        secondVal = [VariableTable getVars:(NSString *) token.value];
+                    }
+                    else if ([token isKindOfClass:[NumberToken class]]){
+                        secondVal = (NSNumber *) token.value;
+                    }
+                    else{
+                        NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
+                        @throw myException;
+                    }
+                    
+                    fd.value = [NSNumber numberWithInt:([firstVal intValue] + [secondVal intValue])];
+                    
+                }
+                else{
+                    NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
+                    @throw myException;
+                }
+                
+            }
+            else{
+                NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
+                @throw myException;
+            }
+            
+        }
+        else{
+            NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Variable name!" userInfo:nil];
+            @throw myException;
+        }
+    }
+    else{
+        NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Variable name!" userInfo:nil];
+        @throw myException;
+    }
+    return fd;
+}
+@end
+
+
+@implementation SubToken
+
+- (TreeNode* ) parse:(TokenList *)tokenList{
+    SetNode* fd = [[SetNode alloc] init];
+    NSNumber* firstVal, *secondVal;
+    if ([tokenList hasMore]){
+        Token* token = [tokenList nextToken];
+        if ([token isKindOfClass:[VarToken class]]){
+            fd.name = (NSString *) token.value;
+            if ([tokenList hasMore]){
+                Token* token = [tokenList nextToken];
+                if ([token isKindOfClass:[VarToken class]]){
+                    firstVal = [VariableTable getVars:(NSString *) token.value];
+                }
+                else if ([token isKindOfClass:[NumberToken class]]){
+                    firstVal = (NSNumber *) token.value;
+                }
+                else{
+                    NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
+                    @throw myException;
+                }
+                
+                if ([tokenList hasMore]){
+                    Token* token = [tokenList nextToken];
+                    if ([token isKindOfClass:[VarToken class]]){
+                        secondVal = [VariableTable getVars:(NSString *) token.value];
+                    }
+                    else if ([token isKindOfClass:[NumberToken class]]){
+                        secondVal = (NSNumber *) token.value;
+                    }
+                    else{
+                        NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
+                        @throw myException;
+                    }
+                    
+                    fd.value = [NSNumber numberWithInt:([firstVal intValue] - [secondVal intValue])];
+                    
+                }
+                else{
+                    NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
+                    @throw myException;
+                }
+                
+            }
+            else{
+                NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
+                @throw myException;
+            }
+            
+        }
+        else{
+            NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Variable name!" userInfo:nil];
+            @throw myException;
+        }
+    }
+    else{
+        NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Variable name!" userInfo:nil];
+        @throw myException;
+    }
+    return fd;
 }
 @end

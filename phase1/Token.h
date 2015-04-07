@@ -63,6 +63,12 @@
 @interface SetToken : Token
 @end
 
+@interface AddToken : Token
+@end
+
+@interface SubToken : Token
+@end
+
 @interface RepeatToken : Token
 @end
 

@@ -62,6 +62,12 @@
     else if ([tokenString isEqualToString:@"SET"]){
         token = [[SetToken alloc] init];
     }
+    else if ([tokenString isEqualToString:@"ADD"]){
+        token = [[AddToken alloc] init];
+    }
+    else if ([tokenString isEqualToString:@"SUB"]){
+        token = [[SubToken alloc] init];
+    }
     else if ([self isInt:tokenString]){
         NSNumberFormatter* nf = [[NSNumberFormatter alloc] init];
         nf.numberStyle = NSNumberFormatterDecimalStyle;
