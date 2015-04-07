@@ -56,6 +56,9 @@
     else if ([tokenString isEqualToString:@"]"]){
         token = [[EndBlockToken alloc] init];
     }
+    else if ([tokenString isEqualToString:@"MAKE"]){
+        token = [[MakeToken alloc] init];
+    }
     else if ([self isInt:tokenString]){
         NSNumberFormatter* nf = [[NSNumberFormatter alloc] init];
         nf.numberStyle = NSNumberFormatterDecimalStyle;
@@ -64,8 +67,16 @@
         token.value = [nf numberFromString:tokenString];
     }
     else {
-        NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Unknown Token!" userInfo:nil];
-        @throw myException;
+        NSString * pattern = @"^[a-zA-Z][a-zA-Z\\d]*$";
+        NSPredicate* test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
+        if ([test evaluateWithObject:tokenString]){
+            token = [[VarToken alloc] init];
+            token.value = tokenString;
+        }
+        else{
+            NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Unknown Token!" userInfo:nil];
+            @throw myException;
+        }
     }
     
     return token;

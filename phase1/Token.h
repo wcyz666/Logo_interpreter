@@ -54,6 +54,12 @@
 @interface RTToken : Token
 @end
 
+@interface MakeToken : Token
+@end
+
+@interface VarToken : Token
+@end
+
 @interface RepeatToken : Token
 @end
 

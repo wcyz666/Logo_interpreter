@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Token.h"
 #import "TokenList.h"
+#import "VariableTable.h"
 @class Token;
 
 @implementation TokenList

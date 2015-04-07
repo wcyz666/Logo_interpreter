@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SyntaxTreeNode.h"
+#import "VariableTable.h"
 
 // object node for output of each command, the parent obj is TreeNode
 @implementation TreeNode
@@ -126,7 +127,15 @@
 @end
 
 
+@implementation MakeNode
 
+-(void)evaluate{
+    [VariableTable setVars:_name forValue:[NSNumber numberWithInt:0]];
+    
+    NSLog(@"Define variable %@", _name);
+}
+
+@end
 
 
 

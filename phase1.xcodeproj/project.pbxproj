@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		FB9300E91A99827000CAB7EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9300E81A99827000CAB7EE /* main.m */; };
 		FB937D881ABB22550094891C /* TokenDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FB937D871ABB22550094891C /* TokenDictionary.m */; };
+		FB99710E1AD38FDE005AC5B5 /* VariableTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FB99710D1AD38FDE005AC5B5 /* VariableTable.m */; };
 		FBA5386E1ABA62F000E488C5 /* SourceCode.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA5386D1ABA62F000E488C5 /* SourceCode.m */; };
 		FBA538711ABA676100E488C5 /* SyntaxErrorException.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA538701ABA676100E488C5 /* SyntaxErrorException.m */; };
 		FBA538731ABAB3FF00E488C5 /* Token.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA538721ABAB3FF00E488C5 /* Token.m */; };
@@ -36,6 +37,8 @@
 		FB937D891ABD1E780094891C /* SyntaxTreeNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyntaxTreeNode.h; sourceTree = "<group>"; };
 		FB961D0F1AB5DA8D00A7CCEA /* Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Token.h; sourceTree = "<group>"; };
 		FB961D101AB5DC5200A7CCEA /* TokenList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokenList.h; sourceTree = "<group>"; };
+		FB99710C1AD38FBB005AC5B5 /* VariableTable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VariableTable.h; sourceTree = "<group>"; };
+		FB99710D1AD38FDE005AC5B5 /* VariableTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VariableTable.m; sourceTree = "<group>"; };
 		FBA5386C1ABA621000E488C5 /* SourceCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SourceCode.h; sourceTree = "<group>"; };
 		FBA5386D1ABA62F000E488C5 /* SourceCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SourceCode.m; sourceTree = "<group>"; };
 		FBA5386F1ABA671500E488C5 /* SyntaxErrorException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyntaxErrorException.h; sourceTree = "<group>"; };
@@ -88,6 +91,8 @@
 				FBA538741ABAC9CB00E488C5 /* TokenList.m */,
 				FB937D861ABB21DF0094891C /* TokenDictionary.h */,
 				FB937D871ABB22550094891C /* TokenDictionary.m */,
+				FB99710C1AD38FBB005AC5B5 /* VariableTable.h */,
+				FB99710D1AD38FDE005AC5B5 /* VariableTable.m */,
 			);
 			path = phase1;
 			sourceTree = "<group>";
@@ -148,6 +153,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB99710E1AD38FDE005AC5B5 /* VariableTable.m in Sources */,
 				FB937D881ABB22550094891C /* TokenDictionary.m in Sources */,
 				FBDF83BE1ABDAA210023B613 /* SyntaxTreeNode.m in Sources */,
 				FBA538731ABAB3FF00E488C5 /* Token.m in Sources */,

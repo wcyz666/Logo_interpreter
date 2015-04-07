@@ -49,6 +49,14 @@
 
 @end
 
+@interface MakeNode : TreeNode{
+    
+}
+
+@property (copy, nonatomic) NSString* name;
+
+@end
+
 @interface FDNode : NodeWithNumber{
     
 }

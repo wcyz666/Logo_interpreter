@@ -24,6 +24,7 @@ int main(int argc, const char * argv[]) {
         command = [NSString stringWithUTF8String:_command];
         sourceCode.code = command;
         @try {
+            //[sourceCode tokenize];
             [[[sourceCode tokenize] parse] evaluate];
         }
         //tokenize the command, build the parse tree, print the output

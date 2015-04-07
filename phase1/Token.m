@@ -11,6 +11,7 @@
 #import "Token.h"
 #import "TokenList.h"
 #import "SyntaxErrorException.h"
+#import "VariableTable.h"
 @implementation Token
 
 - (TreeNode* ) parse:(TokenList *)tokenList{
@@ -237,3 +238,33 @@
 
 @end
 
+
+@implementation MakeToken
+
+- (TreeNode* ) parse:(TokenList *)tokenList{
+    MakeNode* fd = [[MakeNode alloc] init];
+    if ([tokenList hasMore]){
+        Token* token = [tokenList nextToken];
+        if ([token isKindOfClass:[VarToken class]]){
+            fd.name = (NSString *) token.value;
+        }
+        else{
+            NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Variable name!" userInfo:nil];
+            @throw myException;
+        }
+    }
+    else{
+        NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Variable name!" userInfo:nil];
+        @throw myException;
+    }
+    return fd;
+}
+@end
+
+@implementation VarToken
+
+- (TreeNode* ) parse:(TokenList *)tokenList{
+    NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Redundant variables" userInfo:nil];
+    @throw myException;
+}
+@end
