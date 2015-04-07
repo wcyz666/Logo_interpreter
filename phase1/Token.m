@@ -261,6 +261,49 @@
 }
 @end
 
+
+@implementation SetToken
+
+- (TreeNode* ) parse:(TokenList *)tokenList{
+    SetNode* fd = [[SetNode alloc] init];
+    if ([tokenList hasMore]){
+        Token* token = [tokenList nextToken];
+        if ([token isKindOfClass:[VarToken class]]){
+            fd.name = (NSString *) token.value;
+            if ([tokenList hasMore]){
+                Token* token = [tokenList nextToken];
+                if ([token isKindOfClass:[VarToken class]]){
+                    fd.anoName = (NSString *) token.value;
+                    fd.isVar = YES;
+                }
+                else if ([token isKindOfClass:[NumberToken class]]){
+                    fd.value = (NSNumber *) token.value;
+                    fd.isVar = NO;
+                }
+                else{
+                    NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
+                    @throw myException;
+                }
+            }
+            else{
+                NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
+                @throw myException;
+            }
+            
+        }
+        else{
+            NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Variable name!" userInfo:nil];
+            @throw myException;
+        }
+    }
+    else{
+        NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Variable name!" userInfo:nil];
+        @throw myException;
+    }
+    return fd;
+}
+@end
+
 @implementation VarToken
 
 - (TreeNode* ) parse:(TokenList *)tokenList{

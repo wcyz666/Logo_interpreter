@@ -60,6 +60,9 @@
 @interface VarToken : Token
 @end
 
+@interface SetToken : Token
+@end
+
 @interface RepeatToken : Token
 @end
 

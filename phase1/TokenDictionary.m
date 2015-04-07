@@ -59,6 +59,9 @@
     else if ([tokenString isEqualToString:@"MAKE"]){
         token = [[MakeToken alloc] init];
     }
+    else if ([tokenString isEqualToString:@"SET"]){
+        token = [[SetToken alloc] init];
+    }
     else if ([self isInt:tokenString]){
         NSNumberFormatter* nf = [[NSNumberFormatter alloc] init];
         nf.numberStyle = NSNumberFormatterDecimalStyle;

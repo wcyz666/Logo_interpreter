@@ -137,7 +137,23 @@
 
 @end
 
+@implementation SetNode
 
+-(void)evaluate{
+    
+    if (_isVar == YES){
+        NSNumber* anoValue = [VariableTable getVars:_anoName];
+        [VariableTable setVars:_name forValue:anoValue];
+        NSLog(@"Define variable %@, value %@", _name, _anoName);
+    }
+    else{
+        [VariableTable setVars:_name forValue:_value];
+        NSLog(@"Define variable %@, value %@", _name, _value);
+    }
+    
+}
+
+@end
 
 
 

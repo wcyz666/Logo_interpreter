@@ -57,6 +57,17 @@
 
 @end
 
+@interface SetNode : TreeNode{
+    
+}
+
+@property (copy, nonatomic) NSString* name;
+@property (nonatomic) bool isVar;
+@property (copy, nonatomic) NSString* anoName;
+@property (copy, nonatomic) NSNumber* value;
+
+@end
+
 @interface FDNode : NodeWithNumber{
     
 }
