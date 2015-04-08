@@ -67,6 +67,15 @@
     return self;
 }
 
+- (NSNumber*) getNumber{
+    NSNumber* mynumber;
+    if (_isVar == YES)
+        mynumber = [VariableTable getVars:_name];
+    else
+        mynumber = _number;
+    return mynumber;
+}
+
 //initialize the NodeWithNumber, set the number as argument of command
 -(void)evaluate{
     NSLog(@"Move turtle");
@@ -77,7 +86,9 @@
 @implementation FDNode
 
 -(void)evaluate{
-    NSLog(@"Move turtle %d steps forward.", [self.number intValue]);
+    NSNumber* mynumber = [self getNumber];
+
+    NSLog(@"Move turtle %d steps forward.", [mynumber intValue]);
 }
 
 @end
@@ -85,7 +96,9 @@
 @implementation BKNode
 
 -(void)evaluate{
-    NSLog(@"Move turtle %d steps backward.", [self.number intValue]);
+    NSNumber* mynumber = [self getNumber];
+    
+    NSLog(@"Move turtle %d steps backward.", [mynumber intValue]);
 }
 
 @end
@@ -93,7 +106,10 @@
 @implementation RTNode
 
 -(void)evaluate{
-    NSLog(@"Turn turtle %d degrees right.",[self.number intValue]);
+    
+    NSNumber* mynumber = [self getNumber];
+    
+    NSLog(@"Turn turtle %d degrees right.",[mynumber intValue]);
 }
 
 @end
@@ -101,6 +117,9 @@
 @implementation LTNode
 
 -(void)evaluate{
+    
+    NSNumber* mynumber = [self getNumber];
+    
     NSLog(@"Turn turtle %d degrees left.",[self.number intValue]);
 }
 
@@ -118,7 +137,10 @@
 
 -(void)evaluate{
     int i,j;
-    for (i=0; i<[self.number intValue]; i++) {
+    
+    NSNumber* mynumber = [self getNumber];
+    
+    for (i=0; i<[mynumber intValue]; i++) {
         for (j=0; j<[self.nodeArray count]; j++) {
             [self.nodeArray[j] evaluate];
         }
@@ -146,7 +168,7 @@
     else
         [VariableTable setVars:_name forValue:_number];
     
-    NSLog(@"Define variable %@, value %@", _name, [VariableTable getVars:_name]);
+    NSLog(@"Set variable %@, value %@", _name, [VariableTable getVars:_name]);
 }
 
 @end
@@ -168,7 +190,7 @@
     
     [VariableTable setVars:_name forValue:[NSNumber numberWithInt:(value1 + value2)]];
     
-    NSLog(@"Define variable %@, value %@", _name, [VariableTable getVars:_name]);
+    NSLog(@"Set variable %@, value %@", _name, [VariableTable getVars:_name]);
 }
 
 @end
@@ -190,7 +212,7 @@
     
     [VariableTable setVars:_name forValue:[NSNumber numberWithInt:(value1 - value2)]];
     
-    NSLog(@"Define variable %@, value %@", _name, [VariableTable getVars:_name]);
+    NSLog(@"Set variable %@, value %@", _name, [VariableTable getVars:_name]);
 }
 
 @end

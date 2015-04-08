@@ -28,7 +28,7 @@
 @interface NodeWithNumber : TreeNode{
 }
 @property (nonatomic) NSNumber* number;
-@property (copy, nonatomic) NSString* name;
+@property (nonatomic) NSString* name;
 @property (nonatomic) bool isVar;
 @end
 
