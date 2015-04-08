@@ -19,7 +19,7 @@
 
 @interface Token : NSObject {}
 
-@property (nonatomic, copy) NSObject* value;
+@property (nonatomic) NSObject* value;
 - (TreeNode* ) parse : (TokenList *) tokenList;
 
 @end

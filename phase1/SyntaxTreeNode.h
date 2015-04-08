@@ -28,6 +28,8 @@
 @interface NodeWithNumber : TreeNode{
 }
 @property (nonatomic) NSNumber* number;
+@property (copy, nonatomic) NSString* name;
+@property (nonatomic) bool isVar;
 @end
 
 
@@ -61,11 +63,25 @@
     
 }
 
-@property (copy, nonatomic) NSString* name;
+@property (nonatomic) NSString* name;
+@property (nonatomic) NSString* anoName;
 @property (nonatomic) bool isVar;
-@property (copy, nonatomic) NSString* anoName;
-@property (copy, nonatomic) NSNumber* value;
+@property (nonatomic) NSNumber* number;
 
+@end
+
+@interface AddNode : TreeNode{
+    
+}
+@property (nonatomic) NSString* name;
+@property (nonatomic) NSMutableArray* vars;
+@end
+
+@interface SubNode : TreeNode{
+    
+}
+@property (nonatomic) NSString* name;
+@property (nonatomic) NSMutableArray* vars;
 @end
 
 @interface FDNode : NodeWithNumber{

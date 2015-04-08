@@ -140,17 +140,60 @@
 @implementation SetNode
 
 -(void)evaluate{
-    [VariableTable setVars:_name forValue:_value];
     
-    NSLog(@"Define variable %@, value %@", _name, _value);
+    if (_isVar == YES)
+        [VariableTable setVars:_name forValue:[VariableTable getVars:_anoName]];
+    else
+        [VariableTable setVars:_name forValue:_number];
+    
+    NSLog(@"Define variable %@, value %@", _name, [VariableTable getVars:_name]);
 }
 
 @end
 
+@implementation AddNode
 
+-(void)evaluate{
+    
+    int value1, value2;
+    if ([[_vars objectAtIndex:0] isKindOfClass:[NSNumber class]] == YES)
+        value1 = [[_vars objectAtIndex:0] intValue];
+    else
+        value1 = [[VariableTable getVars:[_vars objectAtIndex:0]] intValue];
+    
+    if ([[_vars objectAtIndex:1] isKindOfClass:[NSNumber class]] == YES)
+        value2 = [[_vars objectAtIndex:1] intValue];
+    else
+        value2 = [[VariableTable getVars:[_vars objectAtIndex:1]] intValue];
+    
+    [VariableTable setVars:_name forValue:[NSNumber numberWithInt:(value1 + value2)]];
+    
+    NSLog(@"Define variable %@, value %@", _name, [VariableTable getVars:_name]);
+}
 
+@end
 
+@implementation SubNode
 
+-(void)evaluate{
+    
+    int value1, value2;
+    if ([[_vars objectAtIndex:0] isKindOfClass:[NSNumber class]] == YES)
+        value1 = [[_vars objectAtIndex:0] intValue];
+    else
+        value1 = [[VariableTable getVars:[_vars objectAtIndex:0]] intValue];
+    
+    if ([[_vars objectAtIndex:1] isKindOfClass:[NSNumber class]] == YES)
+        value2 = [[_vars objectAtIndex:1] intValue];
+    else
+        value2 = [[VariableTable getVars:[_vars objectAtIndex:1]] intValue];
+    
+    [VariableTable setVars:_name forValue:[NSNumber numberWithInt:(value1 - value2)]];
+    
+    NSLog(@"Define variable %@, value %@", _name, [VariableTable getVars:_name]);
+}
+
+@end
 
 
 

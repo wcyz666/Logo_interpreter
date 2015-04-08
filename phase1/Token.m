@@ -58,6 +58,11 @@
         Token* token = [tokenList nextToken];
         if ([token isKindOfClass:[NumberToken class]]){
             fd.number = (NSNumber*) token.value;
+            fd.isVar = NO;
+        }
+        else if ([token isKindOfClass:[VarToken class]]){
+            fd.name = (NSString*) token.value;
+            fd.isVar = YES;
         }
         else{
             NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Number!" userInfo:nil];
@@ -94,6 +99,11 @@
         Token* token = [tokenList nextToken];
         if ([token isKindOfClass:[NumberToken class]]){
             fd.number = (NSNumber*) token.value;
+            fd.isVar = NO;
+        }
+        else if ([token isKindOfClass:[VarToken class]]){
+            fd.name = (NSString*) token.value;
+            fd.isVar = YES;
         }
         else{
             NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Number!" userInfo:nil];
@@ -117,6 +127,11 @@
         Token* token = [tokenList nextToken];
         if ([token isKindOfClass:[NumberToken class]]){
             fd.number = (NSNumber*) token.value;
+            fd.isVar = NO;
+        }
+        else if ([token isKindOfClass:[VarToken class]]){
+            fd.name = (NSString*) token.value;
+            fd.isVar = YES;
         }
         else{
             NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Number!" userInfo:nil];
@@ -139,6 +154,11 @@
         Token* token = [tokenList nextToken];
         if ([token isKindOfClass:[NumberToken class]]){
             fd.number = (NSNumber*) token.value;
+            fd.isVar = NO;
+        }
+        else if ([token isKindOfClass:[VarToken class]]){
+            fd.name = (NSString*) token.value;
+            fd.isVar = YES;
         }
         else{
             NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Number!" userInfo:nil];
@@ -165,8 +185,14 @@
     
     if ([tokenList hasMore]){
         Token* token = [tokenList nextToken];
+
         if ([token isKindOfClass:[NumberToken class]]){
             repeatNode.number = (NSNumber*) token.value;
+            repeatNode.isVar = NO;
+        }
+        else if ([token isKindOfClass:[VarToken class]]){
+            repeatNode.name = (NSString*) token.value;
+            repeatNode.isVar = YES;
         }
         else{
             NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Number!" userInfo:nil];
@@ -272,11 +298,13 @@
             fd.name = (NSString *) token.value;
             if ([tokenList hasMore]){
                 Token* token = [tokenList nextToken];
-                if ([token isKindOfClass:[VarToken class]]){
-                    fd.value = [VariableTable getVars:(NSString *) token.value];
+                if ([token isKindOfClass:[NumberToken class]]){
+                    fd.number = (NSNumber*) token.value;
+                    fd.isVar = NO;
                 }
-                else if ([token isKindOfClass:[NumberToken class]]){
-                    fd.value = (NSNumber *) token.value;
+                else if ([token isKindOfClass:[VarToken class]]){
+                    fd.anoName = (NSString*) token.value;
+                    fd.isVar = YES;
                 }
                 else{
                     NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
@@ -314,19 +342,16 @@
 @implementation AddToken
 
 - (TreeNode* ) parse:(TokenList *)tokenList{
-    SetNode* fd = [[SetNode alloc] init];
-    NSNumber* firstVal, *secondVal;
+    AddNode* fd = [[AddNode alloc] init];
+    fd.vars = [[NSMutableArray alloc] init];    
     if ([tokenList hasMore]){
         Token* token = [tokenList nextToken];
         if ([token isKindOfClass:[VarToken class]]){
             fd.name = (NSString *) token.value;
             if ([tokenList hasMore]){
-                Token* token = [tokenList nextToken];
-                if ([token isKindOfClass:[VarToken class]]){
-                    firstVal = [VariableTable getVars:(NSString *) token.value];
-                }
-                else if ([token isKindOfClass:[NumberToken class]]){
-                    firstVal = (NSNumber *) token.value;
+                token = [tokenList nextToken];
+                if ([token isKindOfClass:[VarToken class]] || [token isKindOfClass:[NumberToken class]]){
+                    [fd.vars addObject:token.value];
                 }
                 else{
                     NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
@@ -334,19 +359,14 @@
                 }
                 
                 if ([tokenList hasMore]){
-                    Token* token = [tokenList nextToken];
-                    if ([token isKindOfClass:[VarToken class]]){
-                        secondVal = [VariableTable getVars:(NSString *) token.value];
-                    }
-                    else if ([token isKindOfClass:[NumberToken class]]){
-                        secondVal = (NSNumber *) token.value;
+                    token = [tokenList nextToken];
+                    if ([token isKindOfClass:[VarToken class]] || [token isKindOfClass:[NumberToken class]]){
+                        [fd.vars addObject:token.value];
                     }
                     else{
                         NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
                         @throw myException;
                     }
-                    
-                    fd.value = [NSNumber numberWithInt:([firstVal intValue] + [secondVal intValue])];
                     
                 }
                 else{
@@ -373,24 +393,20 @@
     return fd;
 }
 @end
-
 
 @implementation SubToken
 
 - (TreeNode* ) parse:(TokenList *)tokenList{
-    SetNode* fd = [[SetNode alloc] init];
-    NSNumber* firstVal, *secondVal;
+    SubNode* fd = [[SubNode alloc] init];
+    fd.vars = [[NSMutableArray alloc] init];
     if ([tokenList hasMore]){
         Token* token = [tokenList nextToken];
         if ([token isKindOfClass:[VarToken class]]){
             fd.name = (NSString *) token.value;
             if ([tokenList hasMore]){
-                Token* token = [tokenList nextToken];
-                if ([token isKindOfClass:[VarToken class]]){
-                    firstVal = [VariableTable getVars:(NSString *) token.value];
-                }
-                else if ([token isKindOfClass:[NumberToken class]]){
-                    firstVal = (NSNumber *) token.value;
+                token = [tokenList nextToken];
+                if ([token isKindOfClass:[VarToken class]] || [token isKindOfClass:[NumberToken class]]){
+                    [fd.vars addObject:token.value];
                 }
                 else{
                     NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
@@ -398,19 +414,14 @@
                 }
                 
                 if ([tokenList hasMore]){
-                    Token* token = [tokenList nextToken];
-                    if ([token isKindOfClass:[VarToken class]]){
-                        secondVal = [VariableTable getVars:(NSString *) token.value];
-                    }
-                    else if ([token isKindOfClass:[NumberToken class]]){
-                        secondVal = (NSNumber *) token.value;
+                    token = [tokenList nextToken];
+                    if ([token isKindOfClass:[VarToken class]] || [token isKindOfClass:[NumberToken class]]){
+                        [fd.vars addObject:token.value];
                     }
                     else{
                         NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
                         @throw myException;
                     }
-                    
-                    fd.value = [NSNumber numberWithInt:([firstVal intValue] - [secondVal intValue])];
                     
                 }
                 else{
@@ -437,3 +448,4 @@
     return fd;
 }
 @end
+

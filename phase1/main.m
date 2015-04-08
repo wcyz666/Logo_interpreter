@@ -14,6 +14,7 @@ int main(int argc, const char * argv[]) {
     char _command[130];
     NSString* command;
     while (1) {
+        memset(_command, 130, 1);
         fgets(_command, 128, stdin);
         size_t ln = strlen(_command) - 1;
         //Eat the trailing \n

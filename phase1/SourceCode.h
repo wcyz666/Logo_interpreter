@@ -16,7 +16,7 @@
 #import "TokenList.h"
 
 @interface SourceCode : NSObject {}
-@property (nonatomic, copy) NSString* code;
+@property (nonatomic) NSString* code;
 - (TokenList*) tokenize;
 
 @end

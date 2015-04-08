@@ -79,9 +79,9 @@
 			isa = PBXGroup;
 			children = (
 				FB9300E81A99827000CAB7EE /* main.m */,
-				FB961D0F1AB5DA8D00A7CCEA /* Token.h */,
 				FB961D101AB5DC5200A7CCEA /* TokenList.h */,
 				FBA5386C1ABA621000E488C5 /* SourceCode.h */,
+				FB961D0F1AB5DA8D00A7CCEA /* Token.h */,
 				FBA5386D1ABA62F000E488C5 /* SourceCode.m */,
 				FBA5386F1ABA671500E488C5 /* SyntaxErrorException.h */,
 				FBA538701ABA676100E488C5 /* SyntaxErrorException.m */,
