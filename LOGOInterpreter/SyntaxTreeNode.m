@@ -10,6 +10,8 @@
 #import "SyntaxTreeNode.h"
 #import "VariableTable.h"
 
+
+
 // object node for output of each command, the parent obj is TreeNode
 @implementation TreeNode
 
@@ -23,38 +25,51 @@
 
 //if not repeat command, then return emoty array
 
+
 -(NSArray *)getChildren {
     return _nodeArray;
 }
--(void)evaluate{
-    NSLog(@"this is TreeNode");
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
+    //NSLog(@"this is TreeNode");
 }
 - (void) addChildren:(TreeNode *)node{
     
+}
+
++(void)draw:(NSBezierPath *)path forPosition:(Position *)pos {
+    if (pos.penDown) {
+        [path lineToPoint:CGPointMake(pos.x, pos.y)];
+    } else {
+        [path moveToPoint:CGPointMake(pos.x, pos.y)];
+    }
 }
 
 @end
 
 @implementation CSNode
 
-- (void)evaluate{
-    NSLog(@"Clear screen");
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
+    [path removeAllPoints];
+    [path moveToPoint:CGPointMake(pos.x, pos.y)];
+    ////NSLog(@"Clear screen");
 }
 
 @end
 
 @implementation PUNode
 
-- (void)evaluate{
-    NSLog(@"Pen up.");
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
+    pos.penDown=NO;
+    //NSLog(@"Pen up.");
 }
 
 @end
 
 @implementation PDNode
 
-- (void)evaluate{
-    NSLog(@"Pen down.");
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
+    pos.penDown=YES;
+    //NSLog(@"Pen down.");
 }
 
 @end
@@ -77,50 +92,59 @@
 }
 
 //initialize the NodeWithNumber, set the number as argument of command
--(void)evaluate{
-    NSLog(@"Move turtle");
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
+    //NSLog(@"Move turtle");
 }
 
 @end
 
 @implementation FDNode
 
--(void)evaluate{
-    NSNumber* mynumber = [self getNumber];
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
+    NSInteger step = [[self getNumber] integerValue];
+    pos.x += step * cosf(pos.direction * M_PI / 180);
+    pos.y += step * sinf(pos.direction * M_PI / 180);
+    [TreeNode draw:path forPosition:pos];
 
-    NSLog(@"Move turtle %d steps forward.", [mynumber intValue]);
+    //NSLog(@"Move turtle %ld steps forward.", step);
+    //NSLog(@"%@ path",path);
 }
 
 @end
 
 @implementation BKNode
 
--(void)evaluate{
-    NSNumber* mynumber = [self getNumber];
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
+    NSInteger step = [[self getNumber] integerValue];
+    pos.x -= step * cosf(pos.direction * M_PI / 180);
+    pos.y -= step * sinf(pos.direction * M_PI / 180);
+    [TreeNode draw:path forPosition:pos];
     
-    NSLog(@"Move turtle %d steps backward.", [mynumber intValue]);
+    //NSLog(@"Move turtle %ld steps backward.", step);
 }
 
 @end
 
 @implementation RTNode
 
--(void)evaluate{
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
     
-    NSNumber* mynumber = [self getNumber];
+    NSInteger angle = [[self getNumber] integerValue];
+    pos.direction -= angle;
     
-    NSLog(@"Turn turtle %d degrees right.",[mynumber intValue]);
+    //NSLog(@"Turn turtle %ld degrees right.", angle);
 }
 
 @end
 
 @implementation LTNode
 
--(void)evaluate{
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
     
-    NSNumber* mynumber = [self getNumber];
+    NSInteger angle = [[self getNumber] integerValue];
+    pos.direction -= angle;
     
-    NSLog(@"Turn turtle %d degrees left.",[mynumber intValue]);
+    //NSLog(@"Turn turtle %ld degrees left.", angle);
 }
 
 @end
@@ -135,14 +159,14 @@
     [self.nodeArray addObject:node];
 }
 
--(void)evaluate{
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
     int i,j;
     
     NSNumber* mynumber = [self getNumber];
     
     for (i=0; i<[mynumber intValue]; i++) {
         for (j=0; j<[self.nodeArray count]; j++) {
-            [self.nodeArray[j] evaluate];
+            [self.nodeArray[j] evaluate:path forPosition:pos];
         }
     }
 }
@@ -164,12 +188,12 @@
     [self.nodeArray addObject:node];
 }
 
--(void)evaluate{
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
     int j;
     
     while ([self checkCondition]) {
         for (j=0; j<[self.nodeArray count]; j++) {
-            [self.nodeArray[j] evaluate];
+            [self.nodeArray[j] evaluate:path forPosition:pos];
         }
     }
 }
@@ -232,30 +256,30 @@
 
 @implementation MakeNode
 
--(void)evaluate{
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
     [VariableTable setVars:_name forValue:[NSNumber numberWithInt:0]];
     
-    NSLog(@"Define variable %@", _name);
+    //NSLog(@"Define variable %@", _name);
 }
 @end
 
 @implementation SetNode
 
--(void)evaluate{
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
     
     if (_isVar == YES)
         [VariableTable setVars:_name forValue:[VariableTable getVars:_anoName]];
     else
         [VariableTable setVars:_name forValue:_number];
-    
-    NSLog(@"Set variable %@, value %@", _name, [VariableTable getVars:_name]);
+
+    //NSLog(@"Set variable %@, value %@", _name, [VariableTable getVars:_name]);
 }
 
 @end
 
 @implementation AddNode
 
--(void)evaluate{
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
     
     int value1, value2;
     if ([[_vars objectAtIndex:0] isKindOfClass:[NSNumber class]] == YES)
@@ -270,14 +294,14 @@
     
     [VariableTable setVars:_name forValue:[NSNumber numberWithInt:(value1 + value2)]];
     
-    NSLog(@"Set variable %@, value %@", _name, [VariableTable getVars:_name]);
+    //NSLog(@"Set variable %@, value %@", _name, [VariableTable getVars:_name]);
 }
 
 @end
 
 @implementation SubNode
 
--(void)evaluate{
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos{
     
     int value1, value2;
     if ([[_vars objectAtIndex:0] isKindOfClass:[NSNumber class]] == YES)
@@ -292,7 +316,7 @@
     
     [VariableTable setVars:_name forValue:[NSNumber numberWithInt:(value1 - value2)]];
     
-    NSLog(@"Set variable %@, value %@", _name, [VariableTable getVars:_name]);
+    //NSLog(@"Set variable %@, value %@", _name, [VariableTable getVars:_name]);
 }
 
 @end

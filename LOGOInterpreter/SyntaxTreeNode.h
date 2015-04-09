@@ -9,8 +9,10 @@
 #ifndef phase2_Tree_h
 #define phase2_Tree_h
 
-#endif
+
 #import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
+#import "Position.h"
 
 @interface TreeNode : NSObject{
     
@@ -19,8 +21,9 @@
 @property NSMutableArray *nodeArray;
 
 -(NSArray *)getChildren;
--(void)evaluate;
+-(void)evaluate:(NSBezierPath *)path forPosition:(Position *)pos;
 -(void)addChildren:( TreeNode *)node;
++(void)draw:(NSBezierPath *)path forPosition:(Position *)pos;
 
 @end
 
@@ -120,3 +123,5 @@
 }
 
 @end
+
+#endif

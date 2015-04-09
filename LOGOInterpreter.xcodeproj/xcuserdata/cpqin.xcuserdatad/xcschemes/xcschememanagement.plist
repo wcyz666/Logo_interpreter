@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>phase1.xcscheme</key>
+		<key>LOGOInterpreter.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,7 +12,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>FB9300E41A99826F00CAB7EE</key>
+		<key>77A976D21ABFD90F0000F89A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>77A976E51ABFD9100000F89A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
