@@ -44,6 +44,14 @@
 }
 @end
 
+@implementation CmpToken
+
+- (TreeNode* ) parse:(TokenList *)tokenList{
+    NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Redundant Compare char" userInfo:nil];
+    @throw myException;
+}
+@end
+
 @implementation CSToken
 - (TreeNode* ) parse:(TokenList *)tokenList{
     return [[CSNode alloc] init];
@@ -449,3 +457,152 @@
 }
 @end
 
+@interface WhileToken()
+
+- (void) validateWhile: (TokenList*) tokenList whileNode: (WhileNode *) whileNode;
+
+@end
+
+@implementation WhileToken
+
+- (void) validateWhile: (TokenList*) tokenList whileNode: (WhileNode *) whileNode{
+    
+    if ([tokenList hasMore]){
+        Token* token = [tokenList nextToken];
+        if (NO == [token isKindOfClass:[BeginBlockToken class]]){
+            NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Repeat command should be followed by left bracket!" userInfo:nil];
+            @throw myException;
+        }
+    }
+    else{
+        NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Repeat command should be followed by left bracket!" userInfo:nil];
+        @throw myException;
+    }
+
+    
+    if ([tokenList hasMore]){
+        Token* token = [tokenList nextToken];
+        
+        if ([token isKindOfClass:[CmpToken class]]){
+            NSString* cpmString = (NSString*) token.value;
+            if ([cpmString isEqualToString:@"EQ"])
+                whileNode.compare = 0;
+            else if ([cpmString isEqualToString:@"GT"])
+                whileNode.compare = 1;
+            else if ([cpmString isEqualToString:@"ST"])
+                whileNode.compare = 2;
+        }
+        else{
+            NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Number!" userInfo:nil];
+            @throw myException;
+        }
+    }
+    else{
+        NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack Number!" userInfo:nil];
+        @throw myException;
+    }
+    
+    if ([tokenList hasMore]){
+        Token* token = [tokenList nextToken];
+        if ([token isKindOfClass:[VarToken class]] || [token isKindOfClass:[NumberToken class]]){
+            [whileNode.vars addObject:token.value];
+        }
+        else{
+            NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
+            @throw myException;
+        }
+        
+        if ([tokenList hasMore]){
+            token = [tokenList nextToken];
+            if ([token isKindOfClass:[VarToken class]] || [token isKindOfClass:[NumberToken class]]){
+                [whileNode.vars addObject:token.value];
+            }
+            else{
+                NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
+                @throw myException;
+            }
+            
+        }
+        else{
+            NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
+            @throw myException;
+        }
+        
+    }
+    else{
+        NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Lack another Variable name or number!" userInfo:nil];
+        @throw myException;
+    }
+    
+    if ([tokenList hasMore]){
+        Token* token = [tokenList nextToken];
+        if (NO == [token isKindOfClass:[EndBlockToken class]]){
+            NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Repeat command should be followed by left bracket!" userInfo:nil];
+            @throw myException;
+        }
+    }
+    else{
+        NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Repeat command should be followed by left bracket!" userInfo:nil];
+        @throw myException;
+    }
+    
+    if ([tokenList hasMore]){
+        Token* token = [tokenList nextToken];
+        if (NO == [token isKindOfClass:[BeginBlockToken class]]){
+            NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Repeat command should be followed by left bracket!" userInfo:nil];
+            @throw myException;
+        }
+    }
+    else{
+        NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Repeat command should be followed by left bracket!" userInfo:nil];
+        @throw myException;
+    }
+}
+
+- (TreeNode* ) parse:(TokenList *)tokenList{
+    int recur = 1;
+    WhileNode* whileRoot = [[WhileNode alloc] init];
+    whileRoot.vars = [[NSMutableArray alloc] init];
+    NSMutableArray* repeatStack = [[NSMutableArray alloc] init];
+    [repeatStack addObject:whileRoot];
+    
+    //Use Array to simulate Stack structure.
+    //The Last element is the current root
+    //This algorithm allows for arbitrary deep layers.
+    
+    
+    WhileNode* currentRoot = whileRoot;
+    
+    [self validateWhile:tokenList whileNode:whileRoot];
+    
+    while (true){
+        if (NO == [tokenList hasMore]){
+            NSException* myException = [SyntaxErrorException exceptionWithName:@"SyntaxError" reason:@"Unmatched brackets!" userInfo:nil];
+            @throw myException;
+        }
+        Token* token = [tokenList nextToken];
+        if ([token isKindOfClass:[EndBlockToken class]]){
+            --recur;
+            if (!recur)
+                break;
+            else {
+                [repeatStack removeLastObject];
+                currentRoot = [repeatStack lastObject];
+            }
+        }
+        else if ([token isKindOfClass:[WhileNode class]]){
+            ++recur;
+            WhileNode* newNode = [[WhileNode alloc] init];
+            [self validateWhile:tokenList whileNode:newNode];
+            [repeatStack addObject: newNode];
+            currentRoot = newNode;
+        }
+        else{
+            [currentRoot addChildren:[token parse:tokenList]];
+        }
+        
+    }
+    return whileRoot;
+}
+
+@end

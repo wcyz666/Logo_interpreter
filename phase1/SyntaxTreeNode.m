@@ -120,7 +120,7 @@
     
     NSNumber* mynumber = [self getNumber];
     
-    NSLog(@"Turn turtle %d degrees left.",[self.number intValue]);
+    NSLog(@"Turn turtle %d degrees left.",[mynumber intValue]);
 }
 
 @end
@@ -148,6 +148,87 @@
 }
 @end
 
+@interface WhileNode()
+
+- (BOOL) checkCondition;
+
+@end
+
+@implementation WhileNode
+
+-(NSArray *)getChildren:(TreeNode *)node{
+    return self.nodeArray;
+}
+
+-(void)addChildren:(TreeNode *)node{
+    [self.nodeArray addObject:node];
+}
+
+-(void)evaluate{
+    int j;
+    
+    while ([self checkCondition]) {
+        for (j=0; j<[self.nodeArray count]; j++) {
+            [self.nodeArray[j] evaluate];
+        }
+    }
+}
+- (BOOL) checkCondition{
+    int value1, value2;
+    
+    switch (_compare) {
+        case 0:
+            if ([[_vars objectAtIndex:0] isKindOfClass:[NSNumber class]] == YES)
+                value1 = [[_vars objectAtIndex:0] intValue];
+            else
+                value1 = [[VariableTable getVars:[_vars objectAtIndex:0]] intValue];
+            
+            if ([[_vars objectAtIndex:1] isKindOfClass:[NSNumber class]] == YES)
+                value2 = [[_vars objectAtIndex:1] intValue];
+            else
+                value2 = [[VariableTable getVars:[_vars objectAtIndex:1]] intValue];
+            if (value1 == value2)
+                return YES;
+            else
+                return NO;
+            break;
+        case 1:
+            if ([[_vars objectAtIndex:0] isKindOfClass:[NSNumber class]] == YES)
+                value1 = [[_vars objectAtIndex:0] intValue];
+            else
+                value1 = [[VariableTable getVars:[_vars objectAtIndex:0]] intValue];
+            
+            if ([[_vars objectAtIndex:1] isKindOfClass:[NSNumber class]] == YES)
+                value2 = [[_vars objectAtIndex:1] intValue];
+            else
+                value2 = [[VariableTable getVars:[_vars objectAtIndex:1]] intValue];
+            if (value1 > value2)
+                return YES;
+            else
+                return NO;
+            break;
+        case 2:
+            if ([[_vars objectAtIndex:0] isKindOfClass:[NSNumber class]] == YES)
+                value1 = [[_vars objectAtIndex:0] intValue];
+            else
+                value1 = [[VariableTable getVars:[_vars objectAtIndex:0]] intValue];
+            
+            if ([[_vars objectAtIndex:1] isKindOfClass:[NSNumber class]] == YES)
+                value2 = [[_vars objectAtIndex:1] intValue];
+            else
+                value2 = [[VariableTable getVars:[_vars objectAtIndex:1]] intValue];
+            if (value1 < value2)
+                return YES;
+            else
+                return NO;
+            break;
+        default:
+            break;
+    }
+    return NO;
+}
+
+@end
 
 @implementation MakeNode
 
@@ -156,7 +237,6 @@
     
     NSLog(@"Define variable %@", _name);
 }
-
 @end
 
 @implementation SetNode

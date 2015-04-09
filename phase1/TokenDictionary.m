@@ -68,6 +68,13 @@
     else if ([tokenString isEqualToString:@"SUB"]){
         token = [[SubToken alloc] init];
     }
+    else if ([tokenString isEqualToString:@"WHILE"]){
+        token = [[WhileToken alloc] init];
+    }
+    else if ([tokenString isEqualToString:@"ST"] || [tokenString isEqualToString:@"EQ"] || [tokenString isEqualToString:@"GT"]){
+        token = [[CmpToken alloc] init];
+        token.value = tokenString;
+    }
     else if ([self isInt:tokenString]){
         NSNumberFormatter* nf = [[NSNumberFormatter alloc] init];
         nf.numberStyle = NSNumberFormatterDecimalStyle;

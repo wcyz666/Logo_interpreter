@@ -69,6 +69,12 @@
 @interface SubToken : Token
 @end
 
+@interface WhileToken : Token
+@end
+
+@interface CmpToken : Token
+@end
+
 @interface RepeatToken : Token
 @end
 

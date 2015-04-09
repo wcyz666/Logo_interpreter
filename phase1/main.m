@@ -14,8 +14,8 @@ int main(int argc, const char * argv[]) {
     char _command[130];
     NSString* command;
     while (1) {
-        memset(_command, 130, 1);
-        fgets(_command, 128, stdin);
+        memset(_command, 1000, 1);
+        fgets(_command, 998, stdin);
         size_t ln = strlen(_command) - 1;
         //Eat the trailing \n
         if (_command[ln] == '\n')

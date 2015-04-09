@@ -84,6 +84,13 @@
 @property (nonatomic) NSMutableArray* vars;
 @end
 
+@interface WhileNode : TreeNode{
+    
+}
+@property (nonatomic) int compare;
+@property (nonatomic) NSMutableArray* vars;
+@end
+
 @interface FDNode : NodeWithNumber{
     
 }

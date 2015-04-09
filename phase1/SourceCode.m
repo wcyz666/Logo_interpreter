@@ -33,7 +33,7 @@
 }
 
 - (TokenList* ) tokenize{
-    NSArray* tokenString = [self regexProcess:@"[\\[\\]]|[^ \\[\\]]*"];
+    NSArray* tokenString = [self regexProcess:@"\\[|\\]|[^ \\[\\]]+"];
     TokenList* tokenlist = [[TokenList alloc] init];
     for (NSString* tokenstr in tokenString){
         if ([tokenstr length] > 0)
